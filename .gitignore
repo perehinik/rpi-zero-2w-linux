@@ -171,3 +171,4 @@ sphinx_*/
 /rust-project.json
 
 ./build/
+./output/
