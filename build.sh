@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Go to script directory
 pushd "$(dirname "$0")"

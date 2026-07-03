@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 DOCKER_IMAGE=perehiniak/linux-build-tools:1.0.0
 
