@@ -1,6 +1,49 @@
 #!/bin/bash
 set -e
 
+show_help() {
+    echo "Usage: $(basename "$0") [-d] [-h]"
+    echo
+    echo "Options:"
+    echo "  -d               Run inside Docker."
+    echo "  -h               Show this help message."
+}
+
+USE_DOCKER=0
+DOCKER_IMAGE=perehiniak/linux-build-tools:1.0.0
+
+while getopts "dh" opt; do
+    case "$opt" in
+        d) USE_DOCKER=1 ;;
+        h)
+            show_help
+            exit 0
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            show_help
+            exit 1
+            ;;
+        \?)
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+if [ "$USE_DOCKER" = "1" ] && [ -z "${INSIDE_DOCKER:-}" ]; then
+    exec docker run -it \
+        --rm \
+        -v ./:/home/builder \
+        -e INSIDE_DOCKER=1 \
+        ${USER_SCRIPT_OPTION} \
+        -w /home/builder \
+        -u builder \
+        --entrypoint "$0" \
+        ${DOCKER_IMAGE} \
+        "$@"
+fi
+
 # Go to script directory
 pushd "$(dirname "$0")"
 

@@ -9,7 +9,11 @@ sudo ./install-dependencies.sh
 
 Build kernel, modules and dtb:
 ```bash
-./build-kernel.sh
+./build.sh
+```
+You can also build everything in docker:
+```bash
+./build.sh -d
 ```
 
 Copy files from `./build/output/boot` to `bootfs`
